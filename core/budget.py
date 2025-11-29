@@ -10,7 +10,7 @@ class Budget:
     def __init__(self, profile: UserProfile):
         self.profile = profile
 
-    def month_totals(self, month: int, year: int) -> Dict[str, float]:
+    def month_totals(self, month: int, year: int):
         '''
         Returns dictionary for the month that includes overall income, overall expenses, and net amount.
         '''
@@ -30,13 +30,13 @@ class Budget:
         #results are returned as a dictionary
         return {"income": income, "expense": expense, "net": net}
 
-    def month_transactions(self, month: int, year: int) -> List[Transaction]:
+    def month_transactions(self, month: int, year: int):
         '''
         returns all transactions for month and year
         '''
         return self.profile.list_transactions(month, year)
 
-    def recent_transactions(self, month: int, year: int, n: int) -> List[Transaction]:
+    def recent_transactions(self, month: int, year: int, n: int):
         '''
         Returns latest n transactions for the month (for whatever value of n the user chooses).
         If there are less than n transaction it returns everything.
