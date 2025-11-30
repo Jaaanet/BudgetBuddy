@@ -113,7 +113,7 @@ class UserProfile:
         profile = cls(data["name"])
         for tx_data in data.get("transactions", []):
             tx = Transaction.from_dict(tx_data)
-            profile.add_transaction(tx)
+            profile.add_transactions(tx)
         return profile
     
         

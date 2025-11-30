@@ -1,1 +1,1 @@
-from budgetbuddy.ui.cli import BudgetBuddyApp, run
+from budgetbuddy.ui.main import BudgetBuddyApp, run

@@ -1,0 +1,18 @@
+{
+  "janet": {
+    "name": "janet",
+    "transactions": [
+      {
+        "date": "2025-11-30",
+        "amount": 1200.0,
+        "category": "art",
+        "description": "na",
+        "type": "income"
+      }
+    ]
+  },
+  "Rachel": {
+    "name": "Rachel",
+    "transactions": []
+  }
+}

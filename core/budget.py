@@ -36,18 +36,18 @@ class Budget:
         '''
         return self.profile.list_transactions(month, year)
 
-    def recent_transactions(self, month: int, year: int, n: int):
+    def recent_transactions(self, month: int, year: int):
         '''
         Returns latest n transactions for the month (for whatever value of n the user chooses).
         If there are less than n transaction it returns everything.
         '''
         txs = self.month_transactions(month, year)
         #if less than n transactions, returns everything
-        if len(txs) <= n:
-            return txs
-        else:
-            #returns last n transactions if more than n total transactions
-            return txs[-n:]
+        # if len(txs) <= n:
+        return txs
+        # else:
+        #     #returns last n transactions if more than n total transactions
+            #return txs[-n:]
 
         
 

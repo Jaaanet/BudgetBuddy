@@ -1,26 +1,30 @@
-# This module is showing the navigation menu and taking control on any user input response
-
-# from __future__ import annotations
-from typing import Dict
 from budgetbuddy.core.models import UserProfile, Income, Expense
+from budgetbuddy.core.budget import Budget
 from budgetbuddy.data import repository
 from budgetbuddy.ui import summary
+import os
+
+
+MONTH_NAMES = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+]
 
 
 class BudgetBuddyApp:
-    """
-    High-level controller:
-        app = BudgetBuddyApp()
-        app.run()
-    """
+    """Main controller for the BudgetBuddy program."""
 
     def __init__(self):
-        self.profiles: Dict[str, UserProfile] = repository.load_profiles()
+        # Load all saved profiles from the JSON file
+        self.profiles = repository.load_profiles()
+        # We keep both current month and current year for summaries
         self.current_month = 1
-        self.current_year = 2025
+        self.current_year = 2025  # can be changed by the user
 
-    # 
-    def run(self) -> None:
+    # ===== Entry point =====
+
+    def run(self):
         """Start the main menu loop."""
         while True:
             choice = self._main_menu()
@@ -37,9 +41,9 @@ class BudgetBuddyApp:
             else:
                 print("Invalid choice, please try again.")
 
-    # ---------- main menu ----------
+    # ===== Main menu =====
 
-    def _main_menu(self) -> str:
+    def _main_menu(self):
         print("\n=== BudgetBuddy Main Menu ===")
         print("1) Guide")
         print("2) Create profile")
@@ -47,14 +51,21 @@ class BudgetBuddyApp:
         print("4) Quit")
         return input("Choose an option: ").strip()
 
-    def show_guide(self) -> None:
-        print("\n=== Guide ===")
-        print("This program lets you track income and expenses")
-        print("for multiple profiles (accounts).")
-        print("Create a profile, open it, then add transactions")
-        print("and view monthly summaries.\n")
+    def show_guide(self):
+        """Read guide.txt stored in the same directory as main.py."""
+    # Determine the folder where main.py is located
+        current_dir = os.path.dirname(__file__)  
+    
+    # Construct the path to guide.txt inside the same directory
+        guide_path = os.path.join(current_dir, "guide.txt")
 
-    def create_profile_flow(self) -> None:
+        try:
+            with open(guide_path, "r", encoding="utf-8") as f:
+                print("\n" + f.read())
+        except FileNotFoundError:
+            print("\nGuide file not found. Make sure guide.txt exists in the ui folder.")
+
+    def create_profile_flow(self):
         name = input("Enter a name for the new profile: ").strip()
         if not name:
             print("Name cannot be empty.")
@@ -62,21 +73,18 @@ class BudgetBuddyApp:
         if name in self.profiles:
             print("A profile with that name already exists.")
             return
+
         repository.create_profile(self.profiles, name)
         repository.save_profiles(self.profiles)
-        print(f"Profile '{name}' created.")
+        print("Profile '{}' created.".format(name))
 
-    # ---------- saved profiles menu ----------
+    # ===== Saved profiles menu =====
 
-    def saved_profiles_menu(self) -> None:
+    def saved_profiles_menu(self):
         while True:
             summary.print_profiles_list(self.profiles)
-            print("\nOptions:")
-            print("  o) Open a profile")
-            print("  r) Rename a profile")
-            print("  d) Delete a profile")
-            print("  b) Back to main menu")
-            choice = input("Choose an option: ").strip().lower()
+            print("\nOptions: o = open, r = rename, d = delete, b = back")
+            choice = input("Choose: ").strip().lower()
 
             if choice == "b":
                 return
@@ -89,15 +97,15 @@ class BudgetBuddyApp:
             else:
                 print("Invalid choice.")
 
-    def _open_profile_flow(self) -> None:
-        name = input("Enter profile name to open: ").strip()
+    def _open_profile_flow(self):
+        name = input("Profile name to open: ").strip()
         profile = self.profiles.get(name)
-        if not profile:
+        if profile is None:
             print("No such profile.")
             return
         self.profile_summary_loop(profile)
 
-    def _rename_profile_flow(self) -> None:
+    def _rename_profile_flow(self):
         old = input("Profile name to rename: ").strip()
         if old not in self.profiles:
             print("No such profile.")
@@ -110,125 +118,183 @@ class BudgetBuddyApp:
         repository.save_profiles(self.profiles)
         print("Profile renamed.")
 
-    def _delete_profile_flow(self) -> None:
+    def _delete_profile_flow(self):
         name = input("Profile name to delete: ").strip()
         if name not in self.profiles:
             print("No such profile.")
             return
-        confirm = input(f"Delete '{name}'? (y/n): ").strip().lower()
+        confirm = input("Delete '{}'? (y/n): ".format(name)).strip().lower()
         if confirm == "y":
             repository.delete_profile(self.profiles, name)
             repository.save_profiles(self.profiles)
             print("Deleted.")
 
-    # ---------- profile summary & actions ----------
+    # ===== Profile summary and actions =====
 
-    def profile_summary_loop(self, profile: UserProfile) -> None:
+    def profile_summary_loop(self, profile):
+        """
+        Menu shown after opening a profile.
+
+        Now the menu is:
+
+        1) Record income
+        2) Record expense
+        3) View all transactions this year (current_year)
+        4) Edit a transaction
+        5) Delete a transaction
+        6) Change year
+        7) View monthly summaries for this year (current_year)
+        8) Back to Saved profiles
+        """
         while True:
+            # Summary page still shows totals for (current_month, current_year)
             summary.print_summary_page(profile, self.current_month, self.current_year)
-            print("\nProfile menu:", profile.name)
+
+            print("\nProfile menu for '{}':".format(profile.name))
             print("1) Record income")
             print("2) Record expense")
-            print("3) View all transactions this month")
+            print("3) View all transactions this year ({})".format(self.current_year))
             print("4) Edit a transaction")
             print("5) Delete a transaction")
-            print("6) Change month")
-            print("7) Back to Saved profiles")
-            choice = input("Choose an option: ").strip()
+            print("6) Change year")
+            print("7) View monthly summaries for this year ({})".format(self.current_year))
+            print("8) Back to Saved profiles")
+
+            choice = input("Choose: ").strip()
 
             if choice == "1":
                 self.record_income_flow(profile)
             elif choice == "2":
                 self.record_expense_flow(profile)
             elif choice == "3":
-                self.view_all_transactions_flow(profile)
+                self.view_year_transactions_flow(profile)
             elif choice == "4":
                 self.edit_transaction_flow(profile)
             elif choice == "5":
                 self.delete_transaction_flow(profile)
             elif choice == "6":
-                self.change_month_flow()
+                self.change_year_flow()
             elif choice == "7":
+                self.view_monthly_summaries_flow(profile)
+            elif choice == "8":
                 repository.save_profiles(self.profiles)
                 return
             else:
                 print("Invalid choice.")
 
-    def record_income_flow(self, profile: UserProfile) -> None:
+    def record_income_flow(self, profile):
         date = input("Date (YYYY-MM-DD): ").strip()
         amount = float(input("Amount: "))
         category = input("Source/category: ").strip()
         desc = input("Description (optional): ").strip()
-        tx = Income(date=date, amount=amount, category=category, description=desc)
-        profile.add_transaction(tx)
+        tx = Income(date, amount, category, desc)
+        profile.add_transactions(tx)
 
-    def record_expense_flow(self, profile: UserProfile) -> None:
+    def record_expense_flow(self, profile):
         date = input("Date (YYYY-MM-DD): ").strip()
         amount = float(input("Amount: "))
         category = input("Category: ").strip()
         desc = input("Description (optional): ").strip()
-        tx = Expense(date=date, amount=amount, category=category, description=desc)
-        profile.add_transaction(tx)
+        tx = Expense(date, amount, category, desc)
+        profile.add_transactions(tx)
 
-    def view_all_transactions_flow(self, profile: UserProfile) -> None:
-        txs = profile.list_transactions(self.current_month, self.current_year)
+    # === View all transactions for the current year ===
+
+    def view_year_transactions_flow(self, profile):
+        """Show all transactions in the current year for this profile."""
+        prefix = "{:04d}-".format(self.current_year)  # matches "YYYY-"
+        txs = []
+        for t in profile.transactions:
+            if isinstance(t.date, str) and t.date.startswith(prefix):
+                txs.append(t)
+
         print()
         summary.print_transactions(txs)
 
-    def edit_transaction_flow(self, profile: UserProfile) -> None:
+    # === NEW: View monthly summaries for the current year ===
+
+    def view_monthly_summaries_flow(self, profile):
+        """Print income and expense totals for each month of the current year."""
+        budget = Budget(profile)
+        year = self.current_year
+
+        print("\n=== Summary for {} ({}) ===".format(profile.name, year))
+
+        for month in range(1, 13):
+            totals = budget.month_totals(month, year)
+            month_name = MONTH_NAMES[month - 1]
+
+            print("\n{}".format(month_name))
+            print("Total income : {:.2f}".format(totals["income"]))
+            print("Total expense: {:.2f}".format(totals["expense"]))
+
+    def edit_transaction_flow(self, profile):
+        # Still editing only the current month/year subset
         txs = profile.list_transactions(self.current_month, self.current_year)
         summary.print_transactions(txs)
         if not txs:
             return
+
         try:
             index = int(input("Index of transaction to edit: "))
         except ValueError:
             print("Invalid index.")
             return
-        if not (0 <= index < len(txs)):
+
+        if index < 0 or index >= len(txs):
             print("Index out of range.")
             return
+
         t = txs[index]
         print("Leave blank to keep existing value.")
-        new_date = input(f"Date [{t.date}]: ").strip() or t.date
-        new_amount_str = input(f"Amount [{t.amount}]: ").strip()
-        new_amount = float(new_amount_str) if new_amount_str else t.amount
-        new_cat = input(f"Category [{t.category}]: ").strip() or t.category
-        new_desc = input(f"Description [{t.description}]: ").strip() or t.description
-        t.date = new_date
-        t.amount = new_amount
-        t.category = new_cat
-        t.description = new_desc
+        new_date = input("Date [{}]: ".format(t.date)).strip()
+        new_amount = input("Amount [{}]: ".format(t.amount)).strip()
+        new_cat = input("Category [{}]: ".format(t.category)).strip()
+        new_desc = input("Description [{}]: ".format(t.description)).strip()
 
-    def delete_transaction_flow(self, profile: UserProfile) -> None:
+        if new_date:
+            t.date = new_date
+        if new_amount:
+            t.amount = float(new_amount)
+        if new_cat:
+            t.category = new_cat
+        if new_desc:
+            t.description = new_desc
+
+    def delete_transaction_flow(self, profile):
         txs = profile.list_transactions(self.current_month, self.current_year)
         summary.print_transactions(txs)
         if not txs:
             return
+
         try:
             index = int(input("Index of transaction to delete: "))
         except ValueError:
             print("Invalid index.")
             return
-        if not (0 <= index < len(txs)):
+
+        if index < 0 or index >= len(txs):
             print("Index out of range.")
             return
+
         target = txs[index]
         profile.delete_transaction(target)
+        print("Transaction deleted.")
 
-    def change_month_flow(self) -> None:
-        year = input(f"Year [{self.current_year}]: ").strip()
-        month = input(f"Month (1-12) [{self.current_month}]: ").strip()
-        if year:
-            self.current_year = int(year)
-        if month:
-            m = int(month)
-            if 1 <= m <= 12:
-                self.current_month = m
-            else:
-                print("Invalid month.")
-    
-def run() -> None:
-        """Convenience function to start the BudgetBuddy program."""
-        app = BudgetBuddyApp()
-        app.run()
+    # === Change year (keeps month as-is) ===
+
+    def change_year_flow(self):
+        """Allow the user to change the current year."""
+        new_year = input("Year [{}]: ".format(self.current_year)).strip()
+        if new_year:
+            try:
+                self.current_year = int(new_year)
+                print("Year changed to {}.".format(self.current_year))
+            except ValueError:
+                print("Invalid year. Please enter a number.")
+
+
+def run():
+    """Helper so we can call budgetbuddy.run()."""
+    app = BudgetBuddyApp()
+    app.run()
