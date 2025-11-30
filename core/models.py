@@ -6,6 +6,7 @@ class Transaction:
     def __init__(self, date, amount, category, description=""):
         #empty string as the description if nothing inputted (makes it optional)
         #date format must be YYYY-MM-DD
+        #category is the type of income or expense (ex: job for income or car payment for expense)
         self.date = date
         self.amount = float(amount)
         self.category = category
@@ -23,11 +24,13 @@ class Transaction:
         '''
         uses the transaction dictionary, determines if it is income or an expense and returns the correct object
         '''
+        #pick correct class based on transaction type
         tx_type = data.get("type", "transaction")
         if tx_type == "income":
             tx_cls = Income
         elif tx_type == "expense":
             tx_cls = Expense
+        #create object of correct class
         return tx_cls(date=data["date"], amount=data["amount"], category=data["category"], description=data.get("description", ""))
 
     def get_type(self):
@@ -54,11 +57,12 @@ class UserProfile:
     
     def __init__(self, name):
         self.name = name
+        #list to store transaction objects
         self.transactions = []
         
     def add_transactions(self, tx):
         '''
-        add transaction to the user's profile
+        Add transaction to the user's profile
         '''
         self.transactions.append(tx)
 
@@ -67,14 +71,23 @@ class UserProfile:
         Returns all transactions OR only transactions for the month and year the user picks
         '''
         if month is None or year is None:
+            #returns all transactions if no month/year given
             return list(self.transactions)
 
         date_start = f"{year:04d}-{month:02d}-"
+        #filtered transactions that match the month and year the user chooses
         result = []
         for t in self.transactions:
             if t.date.startswith(date_start):
                 result.append(t)
         return result
+    
+    def recent_transactions(self, month, year, n):
+        '''
+        Returns the most recent n transactions for the given month/year
+        '''
+        txs = self.list_transactions(month, year)
+        return txs[-n:]
 
     def delete_transaction(self, tx):
         '''
@@ -96,6 +109,7 @@ class UserProfile:
         '''
         creates a user profile from a dictionary
         '''
+        #creates a user profile with the given name
         profile = cls(data["name"])
         for tx_data in data.get("transactions", []):
             tx = Transaction.from_dict(tx_data)
