@@ -63,15 +63,16 @@ The main data file (`budgetbuddy_data.json`) is created in the **same directory 
 
 Create a runner:
 
-```python
+```
 import budgetbuddy
 budgetbuddy.run()
-···
+```
 Save as test.py and run:
 ·python test.py·
 
 
-Profile Menu Example
+## Profile Menu Example
+```
 Profile menu for 'janet':
 1) Record income
 2) Record expense
@@ -85,54 +86,32 @@ Yearly view submenu:
 [1] 2025-03-15 | Income  | 100.00 | Gift | Birthday
 
 Options: e = edit, d = delete, b = back
+```
 
-Data Storage
+## Data Storage
 
-BudgetBuddy reads/writes profiles through:
-
-budgetbuddy/data/repository.py
-
-
-JSON file:
-
-budgetbuddy_data.json
+BudgetBuddy reads/writes profiles through:  
+`budgetbuddy/data/repository.py`
 
 
+JSON file:  
+
+`budgetbuddy_data.json`
 is automatically generated on first run.
 
-Requirements
-
+## Requirements
 Built on Python 3.8+ and uses only the Python standard library:
-
-json
-
-os
-
-pathlib
-
-datetime (if used by group member in models)
-
+- json
+- os
+- pathlib
 No external installation needed.
 
-Purpose
-
+## Purpose
 This project demonstrates:
-
-Python package design
-
-Separation of logic (core), storage (data), and UI (cli)
-
-JSON-based persistence
-
-Clean class-based modeling for profiles and transactions
-
-Multi-file architecture for medium-size programs
-
+- Python package design
+- Separation of logic (core), storage (data), and UI (command-line interface)
+- JSON-based persistence
+- Clean class-based modeling for profiles and transactions
+- Multi-file architecture for medium-size programs
 Created for a graduate-level software development course.
-
-License
-
-For academic and educational use.
-
-## Package Structure
 
