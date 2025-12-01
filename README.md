@@ -61,15 +61,16 @@ The main data file (`budgetbuddy_data.json`) is created in the **same directory 
 
 ## Running the Program
 
-Create a runner:
+Create a runner python file (eg. test.py) that contains:
 
 ```
 import budgetbuddy
 budgetbuddy.run()
 ```
-Save as test.py and run:
-·python test.py·
+and run:\
+·python test.py·\
 
+notes: the test file should be in the same directory as the packaage!
 
 ## Profile Menu Example
 ```
