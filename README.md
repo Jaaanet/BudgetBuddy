@@ -35,23 +35,23 @@ BudgetBuddy provides yearly and monthly summaries, transaction editing, and pers
 ## Package Structure
 
 budgetbuddy/
-init.py # exposes budgetbuddy.run()
-
-core/
-    __init__.py
-    models.py            # Transaction, Income, Expense, UserProfile
-    budget.py            # Monthly totals and calculation logic
-
-data/
-    __init__.py
-    repository.py        # load/save JSON, manage profiles
-    csvio.py             # optional CSV import/export
-
-ui/
-    __init__.py
-    main.py              # CLI program controller + menus
-    summary.py           # printed summaries and tables
-    guide.txt            # help text shown in program
+    __init__.py          # exposes budgetbuddy.run()
+    
+    core/
+        __init__.py
+        models.py        # UserProfile, Transaction, Income, Expense
+        budget.py        # Month totals, calculations, helpers
+    
+    data/
+        __init__.py
+        repository.py    # load/save JSON, manage profile storage
+        csvio.py         # (optional) CSV import/export
+    
+    ui/
+        __init__.py
+        main.py          # CLI menus and program controller
+        summary.py       # pretty-printed text summaries and listings
+        guide.txt        # help/guide text displayed in the menu
 
 
 
