@@ -1,123 +1,77 @@
-BudgetBuddy — Personal Budget Tracking CLI Application
+# BudgetBuddy
+A simple command-line budget tracking package for managing income, expenses, and multiple user profiles.  
+BudgetBuddy provides yearly and monthly summaries, transaction editing, and persistent data storage using JSON.
 
-BudgetBuddy is a simple text-based Python package for tracking personal income and expenses using named profiles (accounts).
-It provides an easy way to record transactions, view yearly summaries, explore monthly totals, and manage multiple profiles — all through a clean command-line interface.
+---
 
-✨ Features
-✔ Profile Management
+## Features
 
-Create, rename, delete, and open profiles (accounts)
+- **Multiple profiles**
+  - Create, rename, delete, and open profiles
+  - Each profile stores independent transactions
 
-Each profile stores its own set of transactions
+- **Record transactions**
+  - Income or Expense
+  - Includes date, amount, category, and optional description
 
-Profiles are saved automatically in budgetbuddy_data.json
+- **Yearly transaction view**
+  - View all transactions for a selected year
+  - Edit or delete transactions through a submenu
 
-✔ Recording Transactions
+- **Monthly summaries**
+  - For each month of the chosen year:
+    - total income  
+    - total expenses
 
-Record income (salary, gifts, refunds, bonuses, etc.)
+- **Guide file**
+  - External `guide.txt` stored in `ui/`
+  - Loaded safely using a relative path
 
-Record expenses (food, rent, entertainment, etc.)
+- **Persistent storage**
+  - All data saved in `budgetbuddy_data.json`
 
-Each transaction includes:
+---
 
-date (YYYY-MM-DD)
+## Package Structure
 
-amount
-
-category
-
-optional description
-
-✔ Yearly Views
-
-View all transactions for the current year
-
-Edit or delete transactions through a submenu
-
-Change the selected year at any time
-
-✔ Monthly Summaries
-
-Generate a full summary such as:
-
-=== Summary for janet (2025) ===
-
-January
-Total income : 500.00
-Total expense: 200.00
-
-February
-Total income : 400.00
-Total expense: 180.00
-...
-
-✔ Help Guide (External File)
-
-guide.txt stored inside the ui/ folder
-
-Loaded with a safe relative path
-
-Easy to modify without touching code
-
-📦 Package Structure
 budgetbuddy/
-    __init__.py          # exposes budgetbuddy.run()
-    
-    core/
-        __init__.py
-        models.py        # UserProfile, Transaction, Income, Expense
-        budget.py        # Month totals, calculations, helpers
-    
-    data/
-        __init__.py
-        repository.py    # load/save JSON, manage profile storage
-        csvio.py         # (optional) CSV import/export
-    
-    ui/
-        __init__.py
-        main.py          # CLI menus and program controller
-        summary.py       # pretty-printed text summaries and listings
-        guide.txt        # help/guide text displayed in the menu
+init.py # exposes budgetbuddy.run()
+
+core/
+    __init__.py
+    models.py            # Transaction, Income, Expense, UserProfile
+    budget.py            # Monthly totals and calculation logic
+
+data/
+    __init__.py
+    repository.py        # load/save JSON, manage profiles
+    csvio.py             # optional CSV import/export
+
+ui/
+    __init__.py
+    main.py              # CLI program controller + menus
+    summary.py           # printed summaries and tables
+    guide.txt            # help text shown in program
 
 
-The program stores all profile data in:
 
-budgetbuddy_data.json
+The main data file (`budgetbuddy_data.json`) is created in the **same directory where the program is run**.
 
+---
 
-in the same directory from which the program is run.
+## Running the Program
 
-▶️ Running the Program
+Create a runner:
 
-Create a small runner script (example):
-
+```python
 import budgetbuddy
 budgetbuddy.run()
+···
+Save as test.py and run:
+·python test.py·
 
 
-Save it as:
-
-test.py
-
-
-Run:
-
-python test.py
-
-📁 Data Storage
-
-BudgetBuddy automatically creates and updates:
-
-budgetbuddy_data.json
-
-
-This file contains all saved profiles and transactions.
-Make sure it remains in the same directory as your runner script.
-
-🧩 Main User Interface (Profile Menu)
-
-When you open a profile, you will see:
-
+Profile Menu Example
 Profile menu for 'janet':
 1) Record income
 2) Record expense
@@ -126,57 +80,59 @@ Profile menu for 'janet':
 5) View monthly summaries for this year (2025)
 6) Back to Saved profiles
 
-
-Option 3 opens a submenu:
-
-[0] 2025-03-15 | Expense | 35.00 | Food | Lunch
-[1] 2025-03-17 | Income  | 120.00 | Gift | Birthday
+Yearly view submenu:
+[0] 2025-03-12 | Expense | 12.50 | Food | Lunch
+[1] 2025-03-15 | Income  | 100.00 | Gift | Birthday
 
 Options: e = edit, d = delete, b = back
 
-🛠 Installation / Requirements
+Data Storage
 
-BudgetBuddy requires Python 3.8+.
+BudgetBuddy reads/writes profiles through:
 
-Install required packages:
-
-pip install -r requirements.txt
+budgetbuddy/data/repository.py
 
 
-Typical dependencies:
+JSON file:
 
-json (built-in)
-os (built-in)
-pathlib (built-in)
+budgetbuddy_data.json
 
 
-BudgetBuddy uses only standard Python libraries, so installation is simple.
+is automatically generated on first run.
 
-🎯 Purpose and Learning Goals
+Requirements
 
-BudgetBuddy was developed as an educational project to practice:
+Built on Python 3.8+ and uses only the Python standard library:
 
-Multi-file Python package structure
+json
 
-Data persistence using JSON
+os
 
-CLI application design
+pathlib
 
-Object-oriented programming (OOP)
+datetime (if used by group member in models)
 
-Clean separation between:
+No external installation needed.
 
-domain logic (core)
+Purpose
 
-data storage (data)
+This project demonstrates:
 
-user interface (ui)
+Python package design
 
-📝 License
+Separation of logic (core), storage (data), and UI (cli)
 
-This project is for educational use in a software development course.
-You may modify and adapt it for personal learning.
+JSON-based persistence
 
-🙌 Credits
+Clean class-based modeling for profiles and transactions
 
-Developed by Janet Lu and team as part of a graduate-level Software Development course.
+Multi-file architecture for medium-size programs
+
+Created for a graduate-level software development course.
+
+License
+
+For academic and educational use.
+
+## Package Structure
+
