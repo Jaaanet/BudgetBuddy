@@ -47,7 +47,7 @@
 #### Methods:
 - run(self): Starts the main loop that shows the navigation menu and collects user input
 - _main_menu(self): Gives all the main menu options and lets user choose an option
-- show_guide(self): Gives a brief explanation of what the program does
+- show_guide(self): Reads the guide.txt file to explain how to use the profile
 - create_profile_flow(self): Lets the user create a new named profile and saves it 
 - saved_profiles_menu(self): Lets the user choose to open, rename, or delete a profile or go back to the main menu
 - _open_profile_flow(self): Lets the user choose a profile and open it if it exists
@@ -56,10 +56,11 @@
 - profile_summary_loop(self, profile: UserProfile): Gives all the profile menu options and lets user choose where to go
 - record_income_flow(self, profile: UserProfile): Collects the date, amount, category, and description of an income object and adds it to the user's profile
 - record_expense_flow(seld, profile: UserProfile): Collects the date, amount, category, and description of an expense object and adds it to the user's profile
-- view_all_transaction_flow(self, profile: UserProfile): Shows a summary for all of the transactions for a chosen month and year
+- view_year_transactions_flow(self, profile): Shows a summary for all of the transactions for a chosen year
+- view_monthly_summaries_flow(self, profile): Shows a summary of all transactions per month of the current year
 - edit_transaction_flow(self, profile: UserProfile): Lets the user update an existing transaction
 - delete_transaction_flow(self, profile: UserProfile): Lets the user choose an existing transaction to delete
-- change_month_flow(self): Lets the user choose a month and year to switch to for viewing a summary of that month and year's transactions
+- change_year_flow(self): Lets the user choose a different year to switch to
 #### Function (outside of class):
 - run(): Simple way to start the program outside of the class
 
