@@ -2,18 +2,18 @@
 ## Core Sub-Package
 ### models.py Module
 ### Classes: Transaction, Income, Expense, UserProfile
-### Transaction
+### Class: Transaction
 #### Methods:
 - to_dict(self): Converts the transaction object into a dictionary
 - from_dict(cls, data): Creates the transaction type (Income or Expense) based on the transaction dictionary
 - get_type(self): Returns the type of transaction as a string- just "transaction" for the base case
-### Income (Inherits from Transaction)
+### Class: Income (Inherits from Transaction)
 #### Method:
 - get_type(self): Returns the type of transaction as a string- income
-### Expense (Inherits from Transaction)
+### Class: Expense (Inherits from Transaction)
 #### Method:
 - get_type(self): Returns the type of transaction as a string- expense
-### UserProfile
+### Class: UserProfile
 #### Methods:
 - add_transactions(self, tx): Adds a transaction object to the user's profile
 - list_transactions(self, month=None, year=None): Returns transactions for the chosen month and year or all transactions if no month/year chosen
@@ -23,7 +23,6 @@
 - from_dict(cls, data): Creates a UserProfile from a dictionary
 ### budget.py Module
 ### Class: Budget
-### Budget
 #### Methods:
 - month_totals(self, month: int, year: int): Returns a dictionary that contains the total income for the month, total expenses for the month, and net balance
 - month_transactions(self, month: int, year: int): Returns all transactions for the given month and year
@@ -44,8 +43,7 @@
 
 ## ui Sub-Package
 ### main.py Module
-### Classes: BudgetBuddyApp
-### BudgetBuddyApp
+### Class: BudgetBuddyApp
 #### Methods:
 - run(self): Starts the main loop that shows the navigation menu and collects user input
 - _main_menu(self): Gives all the main menu options and lets user choose an option
