@@ -4,13 +4,8 @@ from budgetbuddy.core.budget import Budget
 def print_summary_page(profile, month, year):
     """Print the summary page for a profile and month."""
     budget = Budget(profile)
-    totals = budget.month_totals(month, year)
+    #totals = budget.month_totals(month, year)
     recent = budget.recent_transactions(month, year)
-
-    # print("\n=== Summary for {} ({}) ===".format(profile.name, year))
-    # print("Total income : {:.2f}".format(totals["income"]))
-    # print("Total expense: {:.2f}".format(totals["expense"]))
-    # print("Net balance  : {:.2f}".format(totals["net"]))
     print("\nRecent transactions:")
     print_transactions(recent)
 
