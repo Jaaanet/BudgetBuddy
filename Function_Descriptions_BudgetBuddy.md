@@ -54,12 +54,10 @@
 - _rename_profile_flow(self): Lets users rename an existing profile
 - _delete_profile_flow(self): Lets the user delete an existing profile, and asks for confirmation before deletion
 - profile_summary_loop(self, profile: UserProfile): Gives all the profile menu options and lets user choose where to go
-- record_income_flow(self, profile: UserProfile): Collects the date, amount, category, and description of an income object and adds it to the user's profile
-- record_expense_flow(seld, profile: UserProfile): Collects the date, amount, category, and description of an expense object and adds it to the user's profile
-- view_year_transactions_flow(self, profile): Shows a summary for all of the transactions for a chosen year
+- record_income_flow(self, profile): Collects the date, amount, category, and description of an income object and adds it to the user's profile
+- record_expense_flow(self, profile): Collects the date, amount, category, and description of an expense object and adds it to the user's profile
+- view_year_transactions_flow(self, profile): Shows a summary for all of the transactions for a chosen year and lets the user edit or delete any previous transactions
 - view_monthly_summaries_flow(self, profile): Shows a summary of all transactions per month of the current year
-- edit_transaction_flow(self, profile: UserProfile): Lets the user update an existing transaction
-- delete_transaction_flow(self, profile: UserProfile): Lets the user choose an existing transaction to delete
 - change_year_flow(self): Lets the user choose a different year to switch to
 #### Function (outside of class):
 - run(): Simple way to start the program outside of the class
