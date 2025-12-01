@@ -67,10 +67,10 @@ Create a runner python file (eg. test.py) that contains:
 import budgetbuddy
 budgetbuddy.run()
 ```
-and run:\
-·python test.py·\
+and run:
+`python test.py`
 
-notes: the test file should be in the same directory as the packaage!
+notes: the test file should be in the same directory as the package!
 
 ## Profile Menu Example
 ```
