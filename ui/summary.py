@@ -6,6 +6,7 @@ def print_summary_page(profile, month, year):
     budget = Budget(profile)
     #totals = budget.month_totals(month, year)
     recent = budget.recent_transactions(month, year)
+    
     print("\nRecent transactions:")
     print_transactions(recent)
 

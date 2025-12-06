@@ -1,0 +1,22 @@
+(base) janetlu@Janets-Macbook-14 budgetbuddy % git log
+commit 672fb3152759646b438bbfe47af9ddac4490fdd4 (HEAD -> main, origin/main, origin/HEAD)
+Author: rmkamphuis <rmkamp@student.ubc.ca>
+Date:   Mon Dec 1 14:27:56 2025 -0800
+
+    updated function descriptions file
+
+commit c76d2d85f3fae82f06c97f71417654a29830b0fd
+Author: Jaaanet <44910377+Jaaanet@users.noreply.github.com>
+Date:   Mon Dec 1 10:56:55 2025 -0800
+
+    Update README.md
+
+commit 6e30f4f8e657ee239f328acb6bcfb382fcb4d07c
+Author: Jaaanet <44910377+Jaaanet@users.noreply.github.com>
+Date:   Mon Dec 1 10:56:13 2025 -0800
+
+    Update README.md
+
+commit bcdc621f9d98cedb0d9ea092d5cb991a6e2f7528
+Author: Jaaanet <44910377+Jaaanet@users.noreply.github.com>
+Date:   Sun Nov 30 18:10:21 2025 -0800
